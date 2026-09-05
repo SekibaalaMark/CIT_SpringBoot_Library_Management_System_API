@@ -16,7 +16,6 @@ import java.time.LocalDate;
 
 
 
-
 @Data
 @Setter
 @Getter
@@ -42,6 +41,7 @@ public class Loan {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Book book;
 
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "Loan Status is required")
     private Status status;
 
