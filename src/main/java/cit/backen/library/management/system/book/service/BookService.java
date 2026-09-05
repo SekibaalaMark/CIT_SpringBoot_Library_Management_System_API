@@ -7,6 +7,7 @@ import cit.backen.library.management.system.book.facade.BookFacade;
 import cit.backen.library.management.system.book.mapper.BookMapper;
 import cit.backen.library.management.system.book.model.Book;
 import cit.backen.library.management.system.book.repository.BookRepository;
+import cit.backen.library.management.system.exceptions.book.BookNotFoundException;
 import cit.backen.library.management.system.page.response.PageResponse;
 import org.springframework.stereotype.Service;
 
@@ -33,4 +34,9 @@ public class BookService {
     public ApiResponse<PageResponse<BookResponse>> getAllBooks(int page,int pageSize){
         return bookFacade.getAllBooks(page,pageSize);
     }
+
+    public ApiResponse<BookResponse> getBookById(Long id){
+        return bookFacade.getBookById(id);
+    }
+
 }
