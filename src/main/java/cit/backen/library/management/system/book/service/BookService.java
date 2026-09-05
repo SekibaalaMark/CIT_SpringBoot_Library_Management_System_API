@@ -10,7 +10,10 @@ import cit.backen.library.management.system.book.model.Book;
 import cit.backen.library.management.system.book.repository.BookRepository;
 import cit.backen.library.management.system.exceptions.book.BookNotFoundException;
 import cit.backen.library.management.system.page.response.PageResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class BookService {
@@ -46,6 +49,13 @@ public class BookService {
 
     public ApiResponse<BookResponse> updateBookPartial(Long id, BookPartialUpdateRequest request){
         return bookFacade.updateBookPartial(id,request);
+    }
+
+    public ApiResponse<BookResponse> getBookByIsbn(@PathVariable String isbn){
+        Book book = bookRepository.getBookByIsbn(isbn)
+                .orElseThrow(()-> new BookNotFoundException("ISBN: "+ isbn));
+        BookResponse bookResponse = bookMapper.bookModelToResponse(book);
+        return new ApiResponse<>("SUCCESS","Book returned",bookResponse);
     }
 
 }
