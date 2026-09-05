@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,20 +23,27 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    private String NINNumber;
+    @NotBlank(message = "NIN Number cannot be blank")
+    @Size(min = 14, max = 14,message = "Nin Number must be characters ")
+    private String ninNumber;
 
-    @NotBlank
+    @NotBlank(message = "First name cannot be blank")
+    @Size(min = 4, max = 20, message = "First name must be between 4 to 20 characters")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "last name cannot be blank")
+    @Size(min = 4, max = 20, message = "Last name must be between 4 to 20 characters")
     private String lastName;
+
+    @NotBlank(message = "Username cannot be blank")
+    @Size(min = 4, max = 50, message = "username must be between 4 to 20 characters")
+    private String username;
 
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Loan> loans  = new ArrayList<>();
 
-    public Member(String NINNumber, String firstName, String lastName) {
-        this.NINNumber = NINNumber;
+    public Member(String ninNumber, String firstName, String lastName) {
+        this.ninNumber = ninNumber;
         this.firstName = firstName;
         this.lastName = lastName;
     }
