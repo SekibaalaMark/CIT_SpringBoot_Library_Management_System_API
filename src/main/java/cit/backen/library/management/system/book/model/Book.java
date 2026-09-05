@@ -29,15 +29,17 @@ public class Book {
     private String Isbn;
 
     @NotBlank(message = "title cannot be blank")
-    @Size(max=200,message = "Title Cannot Exceed 200 Letters")
+    @Size(max=200,message = "Title Cannot Exceed 200 Letters and Must be at least 10 Characters")
     private String title;
 
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "edition is required")
     private Edition edition;
 
     @NotBlank(message = "Author cannot be blank")
     private String author;
 
+    @Enumerated(EnumType.STRING)
     @NotNull(message = "Status is required")
     private Status status;
 
