@@ -13,7 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 public class BookRequest {
     @NotBlank(message = "ISBN Cannot be blank")
-    private String isbn;
+    private  String isbn;
 
     @NotBlank(message = "Title cannot be blank")
     @Size(min = 10, max=200,message = "Title Cannot Exceed 200 Letters and must be at leat 10 characters")
