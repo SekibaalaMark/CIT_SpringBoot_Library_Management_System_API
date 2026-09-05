@@ -1,6 +1,7 @@
 package cit.backen.library.management.system.book.service;
 
 import cit.backen.library.management.system.api.response.ApiResponse;
+import cit.backen.library.management.system.book.dto.BookPartialUpdateRequest;
 import cit.backen.library.management.system.book.dto.BookRequest;
 import cit.backen.library.management.system.book.dto.BookResponse;
 import cit.backen.library.management.system.book.facade.BookFacade;
@@ -37,6 +38,14 @@ public class BookService {
 
     public ApiResponse<BookResponse> getBookById(Long id){
         return bookFacade.getBookById(id);
+    }
+
+    public ApiResponse<BookResponse> updateBookFully(Long id, BookRequest bookRequest){
+        return bookFacade.updateBookFully(id,bookRequest);
+    }
+
+    public ApiResponse<BookResponse> updateBookPartial(Long id, BookPartialUpdateRequest request){
+        return bookFacade.updateBookPartial(id,request);
     }
 
 }
