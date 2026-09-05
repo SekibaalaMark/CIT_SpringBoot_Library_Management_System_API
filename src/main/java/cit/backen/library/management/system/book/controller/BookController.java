@@ -55,5 +55,10 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
+    @GetMapping("/isbn/{isbn}")
+    public ResponseEntity<ApiResponse<BookResponse>> getBookByIsbn(@PathVariable String isbn){
+        ApiResponse<BookResponse> apiResponse = bookService.getBookByIsbn(isbn);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
 
 }
