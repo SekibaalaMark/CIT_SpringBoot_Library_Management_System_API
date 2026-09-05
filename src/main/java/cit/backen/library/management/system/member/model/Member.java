@@ -42,9 +42,10 @@ public class Member {
     @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
     private List<Loan> loans  = new ArrayList<>();
 
-    public Member(String ninNumber, String firstName, String lastName) {
+    public Member(String ninNumber, String firstName, String lastName,String username) {
         this.ninNumber = ninNumber;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
     }
 }
