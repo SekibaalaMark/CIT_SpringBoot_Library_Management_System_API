@@ -6,6 +6,7 @@ import cit.backen.library.management.system.book.dto.BookResponse;
 import cit.backen.library.management.system.book.mapper.BookMapper;
 import cit.backen.library.management.system.book.model.Book;
 import cit.backen.library.management.system.book.repository.BookRepository;
+import cit.backen.library.management.system.exceptions.book.BookNotFoundException;
 import cit.backen.library.management.system.page.response.PageResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -42,5 +43,14 @@ public class BookFacade {
                 bookPage.isLast()
         );
         return new ApiResponse<>("SUCCESS","Page of Books",pageResponse);
+    }
+
+
+    public ApiResponse<BookResponse> getBookById(Long id){
+        Book book = bookRepository.findById(id)
+                .orElseThrow(()-> new BookNotFoundException("id: "+ id));
+        BookResponse bookResponse = bookMapper.bookModelToResponse(book);
+        return new ApiResponse<>("SUCCESS","Book returned successfully",bookResponse);
+
     }
 }
