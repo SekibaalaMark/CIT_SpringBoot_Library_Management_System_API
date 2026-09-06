@@ -46,4 +46,11 @@ public class MemberController {
         ApiResponse<MemberResponse> apiResponse = memberService.getMemberByUsername(username);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<MemberResponse>> updateMemberFully(@PathVariable Long id ,@Valid @RequestBody MemberRequest request){
+        ApiResponse<MemberResponse> apiResponse = memberService.updateMemberFully(id,request);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
 }
