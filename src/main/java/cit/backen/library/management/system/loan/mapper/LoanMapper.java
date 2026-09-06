@@ -40,6 +40,7 @@ public class LoanMapper {
 
     public LoanResponse loanModelToResponse(Loan loan){
         return new LoanResponse(
+                loan.getId(),
                 loan.getDateDue(),
                 loan.getMember().getId(),
                 loan.getBook().getId(),
