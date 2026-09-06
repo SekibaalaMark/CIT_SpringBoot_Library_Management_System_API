@@ -38,9 +38,16 @@ public class MemberService {
     }
 
 
-    public ApiResponse<MemberResponse> getMemberById(@PathVariable Long id){
+    public ApiResponse<MemberResponse> getMemberById(Long id){
         Member member = memberRepository.findById(id)
                 .orElseThrow(()-> new MemberNotFoundException("id: "+id));
+        MemberResponse memberResponse = memberMapper.memberModelToResponse(member);
+        return new ApiResponse<>("SUCCESS","Member returned successfully",memberResponse);
+    }
+
+    public ApiResponse<MemberResponse> getMemberByUsername(String username){
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(()-> new MemberNotFoundException("username: " + username));
         MemberResponse memberResponse = memberMapper.memberModelToResponse(member);
         return new ApiResponse<>("SUCCESS","Member returned successfully",memberResponse);
     }
