@@ -40,4 +40,10 @@ public class MemberController {
         ApiResponse<MemberResponse> apiResponse = memberService.getMemberById(id);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
+    @GetMapping("/username/{username}")
+    public ResponseEntity<ApiResponse<MemberResponse>> getMemberByUsername(@PathVariable String username){
+        ApiResponse<MemberResponse> apiResponse = memberService.getMemberByUsername(username);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
 }
