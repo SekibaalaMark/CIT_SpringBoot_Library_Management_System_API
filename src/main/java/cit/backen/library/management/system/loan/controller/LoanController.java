@@ -34,4 +34,10 @@ public class LoanController {
         ApiResponse<PageResponse<LoanResponse>> apiResponse = loanService.getAllLoans(page,pageSize);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
+    @PatchMapping("/settle/{id}")
+    public ResponseEntity<ApiResponse<LoanResponse>> settleLoan(@PathVariable Long id){
+        ApiResponse<LoanResponse> apiResponse = loanService.settleLoan(id);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
 }
