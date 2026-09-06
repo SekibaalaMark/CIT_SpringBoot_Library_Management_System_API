@@ -2,6 +2,7 @@ package cit.backen.library.management.system.member.controller;
 
 
 import cit.backen.library.management.system.api.response.ApiResponse;
+import cit.backen.library.management.system.member.dto.MemberPartialUpdateRequest;
 import cit.backen.library.management.system.member.dto.MemberRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.service.MemberService;
@@ -52,5 +53,12 @@ public class MemberController {
         ApiResponse<MemberResponse> apiResponse = memberService.updateMemberFully(id,request);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ApiResponse<MemberResponse>> updateMemberPartially(@PathVariable Long id , @RequestBody MemberPartialUpdateRequest request){
+        ApiResponse<MemberResponse> apiResponse = memberService.updateMemberPartially(id,request);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
 
 }
