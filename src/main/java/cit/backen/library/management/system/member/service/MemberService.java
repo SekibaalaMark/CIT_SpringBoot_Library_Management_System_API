@@ -3,6 +3,7 @@ package cit.backen.library.management.system.member.service;
 
 import cit.backen.library.management.system.api.response.ApiResponse;
 import cit.backen.library.management.system.exceptions.member.MemberNotFoundException;
+import cit.backen.library.management.system.member.dto.MemberPartialUpdateRequest;
 import cit.backen.library.management.system.member.dto.MemberRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.facade.MemberFacade;
@@ -56,5 +57,10 @@ public class MemberService {
 
     public ApiResponse<MemberResponse> updateMemberFully(Long id ,MemberRequest request){
         return memberFacade.updateMemberFully(id,request);
+    }
+
+
+    public ApiResponse<MemberResponse> updateMemberPartially(Long id , MemberPartialUpdateRequest request){
+        return memberFacade.updateMemberPartially(id,request);
     }
 }
