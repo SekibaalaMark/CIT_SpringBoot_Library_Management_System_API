@@ -4,6 +4,7 @@ package cit.backen.library.management.system.member.facade;
 import cit.backen.library.management.system.api.response.ApiResponse;
 import cit.backen.library.management.system.exceptions.member.MemberNotFoundException;
 import cit.backen.library.management.system.exceptions.member.MemberWithUsernameAlreadyExistsException;
+import cit.backen.library.management.system.member.dto.MemberPartialUpdateRequest;
 import cit.backen.library.management.system.member.dto.MemberRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.mapper.MemberMapper;
@@ -14,7 +15,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -79,6 +79,30 @@ public class MemberFacade {
 
         MemberResponse memberResponse = memberMapper.memberModelToResponse(memberRepository.save(member));
         return new ApiResponse<>("SUCCESS","member updated successfully",memberResponse);
+    }
 
+
+
+    public ApiResponse<MemberResponse> updateMemberPartially(Long id , MemberPartialUpdateRequest request){
+        Member member = memberRepository.findById(id)
+                .orElseThrow(()-> new MemberNotFoundException("id: "+ id));
+        if(memberRepository.existsByUsername(request.getUsername())){
+            throw new MemberWithUsernameAlreadyExistsException(request.getUsername());
+        }
+
+        if(request.getFirstName() != null){
+            member.setFirstName(request.getFirstName());
+        }
+        if(request.getLastName() != null){
+            member.setLastName(request.getLastName());
+        }
+        if(request.getUsername() != null){
+            member.setUsername(request.getUsername());
+        }
+        if(request.getNinNumber() != null){
+            member.setNinNumber(request.getNinNumber());
+        }
+        MemberResponse memberResponse = memberMapper.memberModelToResponse(memberRepository.save(member));
+        return new ApiResponse<>("SUCCESS","Member updated successfully",memberResponse);
     }
 }
