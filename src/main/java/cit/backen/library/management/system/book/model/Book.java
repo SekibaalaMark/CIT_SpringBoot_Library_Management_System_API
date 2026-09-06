@@ -43,7 +43,7 @@ public class Book {
     @NotNull(message = "Status is required")
     private Status status;
 
-    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "book",orphanRemoval = true)
     private List<Loan> loans = new ArrayList<>();
 
     public Book(String isbn, String title, Edition edition, String author, Status status) {
