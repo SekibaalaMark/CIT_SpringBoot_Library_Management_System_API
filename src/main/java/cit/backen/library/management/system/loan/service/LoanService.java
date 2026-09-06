@@ -2,17 +2,16 @@ package cit.backen.library.management.system.loan.service;
 
 
 import cit.backen.library.management.system.api.response.ApiResponse;
+import cit.backen.library.management.system.exceptions.loan.LoanNotFoundException;
 import cit.backen.library.management.system.loan.dto.LoanRequest;
 import cit.backen.library.management.system.loan.dto.LoanResponse;
+import cit.backen.library.management.system.loan.enums.Status;
 import cit.backen.library.management.system.loan.facade.LoanFacade;
 import cit.backen.library.management.system.loan.mapper.LoanMapper;
 import cit.backen.library.management.system.loan.model.Loan;
 import cit.backen.library.management.system.loan.repository.LoanRepository;;
 import cit.backen.library.management.system.page.response.PageResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @Service
 public class LoanService {
@@ -35,5 +34,13 @@ public class LoanService {
 
     public ApiResponse<PageResponse<LoanResponse>> getAllLoans(int page, int pageSize){
         return loanFacade.getAllLoans(page,pageSize);
+    }
+
+    public ApiResponse<LoanResponse> settleLoan(Long id){
+        Loan loan = loanRepository.findById(id)
+                .orElseThrow(()-> new LoanNotFoundException("id: "+id));
+        loan.setStatus(Status.SETTLED);
+        LoanResponse loanResponse = loanMapper.loanModelToResponse(loanRepository.save(loan));
+        return new ApiResponse<>("SUCCESS","Loan settled successfully",loanResponse);
     }
 }
