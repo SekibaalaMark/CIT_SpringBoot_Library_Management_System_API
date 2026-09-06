@@ -2,6 +2,7 @@ package cit.backen.library.management.system.member.facade;
 
 
 import cit.backen.library.management.system.api.response.ApiResponse;
+import cit.backen.library.management.system.exceptions.member.MemberNotFoundException;
 import cit.backen.library.management.system.exceptions.member.MemberWithUsernameAlreadyExistsException;
 import cit.backen.library.management.system.member.dto.MemberRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
@@ -61,5 +62,23 @@ public class MemberFacade {
         );
 
         return new ApiResponse<>("SUCCESS","Page of members",pageResponse);
+    }
+
+
+    public ApiResponse<MemberResponse> updateMemberFully(Long id ,MemberRequest request){
+        Member member = memberRepository.findById(id)
+                .orElseThrow(()-> new MemberNotFoundException("id:"+ id));
+        if(memberRepository.existsByUsername(request.getUsername())){
+            throw new MemberWithUsernameAlreadyExistsException(request.getUsername());
+        }
+
+        member.setUsername(request.getUsername());
+        member.setNinNumber(request.getNinNumber());
+        member.setLastName(request.getLastName());
+        member.setFirstName(request.getFirstName());
+
+        MemberResponse memberResponse = memberMapper.memberModelToResponse(memberRepository.save(member));
+        return new ApiResponse<>("SUCCESS","member updated successfully",memberResponse);
+
     }
 }
