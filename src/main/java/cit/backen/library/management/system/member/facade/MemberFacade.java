@@ -3,6 +3,7 @@ package cit.backen.library.management.system.member.facade;
 
 import cit.backen.library.management.system.api.response.ApiResponse;
 import cit.backen.library.management.system.exceptions.member.MemberNotFoundException;
+import cit.backen.library.management.system.exceptions.member.MemberWithNinNumberAlreadyExistException;
 import cit.backen.library.management.system.exceptions.member.MemberWithUsernameAlreadyExistsException;
 import cit.backen.library.management.system.member.dto.MemberPartialUpdateRequest;
 import cit.backen.library.management.system.member.dto.MemberRequest;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 
@@ -35,6 +35,10 @@ public class MemberFacade {
 
         if(memberRepository.existsByUsername(request.getUsername())){
             throw new MemberWithUsernameAlreadyExistsException(request.getUsername());
+        }
+
+        if(memberRepository.existsByNinNumber(request.getNinNumber())){
+            throw new MemberWithNinNumberAlreadyExistException(request.getNinNumber());
         }
 
         MemberResponse memberResponse = memberMapper.memberModelToResponse(memberRepository.save(member));
@@ -72,6 +76,10 @@ public class MemberFacade {
             throw new MemberWithUsernameAlreadyExistsException(request.getUsername());
         }
 
+        if(memberRepository.existsByNinNumber(request.getNinNumber())){
+            throw new MemberWithNinNumberAlreadyExistException(request.getNinNumber());
+        }
+
         member.setUsername(request.getUsername());
         member.setNinNumber(request.getNinNumber());
         member.setLastName(request.getLastName());
@@ -82,13 +90,9 @@ public class MemberFacade {
     }
 
 
-
     public ApiResponse<MemberResponse> updateMemberPartially(Long id , MemberPartialUpdateRequest request){
         Member member = memberRepository.findById(id)
                 .orElseThrow(()-> new MemberNotFoundException("id: "+ id));
-        if(memberRepository.existsByUsername(request.getUsername())){
-            throw new MemberWithUsernameAlreadyExistsException(request.getUsername());
-        }
 
         if(request.getFirstName() != null){
             member.setFirstName(request.getFirstName());
@@ -97,11 +101,19 @@ public class MemberFacade {
             member.setLastName(request.getLastName());
         }
         if(request.getUsername() != null){
+            if(memberRepository.existsByUsername(request.getUsername())){
+                throw new MemberWithUsernameAlreadyExistsException(request.getUsername());
+            }
             member.setUsername(request.getUsername());
         }
+
         if(request.getNinNumber() != null){
+            if(memberRepository.existsByNinNumber(request.getNinNumber())){
+                throw new MemberWithNinNumberAlreadyExistException(request.getNinNumber());
+            }
             member.setNinNumber(request.getNinNumber());
         }
+
         MemberResponse memberResponse = memberMapper.memberModelToResponse(memberRepository.save(member));
         return new ApiResponse<>("SUCCESS","Member updated successfully",memberResponse);
     }
