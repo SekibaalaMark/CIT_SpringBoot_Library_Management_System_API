@@ -39,7 +39,7 @@ public class Member {
     @Size(min = 4, max = 50, message = "username must be between 4 to 20 characters")
     private String username;
 
-    @OneToMany(mappedBy = "member",cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "member",orphanRemoval = true)
     private List<Loan> loans  = new ArrayList<>();
 
     public Member(String ninNumber, String firstName, String lastName,String username) {

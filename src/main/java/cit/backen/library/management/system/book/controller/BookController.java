@@ -60,4 +60,10 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteBookById(@PathVariable Long id){
+        ApiResponse<Object> apiResponse = bookService.deleteBookById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
 }

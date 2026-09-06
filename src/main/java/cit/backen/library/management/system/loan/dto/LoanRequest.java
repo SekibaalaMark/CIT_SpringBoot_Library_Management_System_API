@@ -13,14 +13,11 @@ import lombok.*;
 public class LoanRequest {
 
     @NotNull(message = "Loan period cannot be null")
-    private Integer period;
+    private Long period;
 
     @NotNull(message = "member id is required")
     private Long memberId;
 
     @NotNull(message = "book id is required")
     private Long bookId;
-
-    @NotNull(message = "Loan Status is required")
-    private Status status;
 }

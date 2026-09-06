@@ -60,5 +60,11 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteMemberById(@PathVariable Long id){
+        ApiResponse<Object> apiResponse = memberService.deleteMemberById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+
 
 }
