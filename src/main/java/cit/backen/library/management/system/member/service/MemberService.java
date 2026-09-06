@@ -6,8 +6,10 @@ import cit.backen.library.management.system.member.dto.MemberRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.facade.MemberFacade;
 import cit.backen.library.management.system.member.repository.MemberRepository;
+import cit.backen.library.management.system.page.response.PageResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Service
@@ -22,5 +24,9 @@ public class MemberService {
 
     public ApiResponse<MemberResponse> addMember(MemberRequest request){
         return memberFacade.addMember(request);
+    }
+
+    public ApiResponse<PageResponse<MemberResponse>> getAllMembers(int page,int pageSize){
+        return memberFacade.getAllMembers(page,pageSize);
     }
 }
