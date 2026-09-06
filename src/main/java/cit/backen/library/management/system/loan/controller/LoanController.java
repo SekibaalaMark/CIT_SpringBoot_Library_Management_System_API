@@ -40,4 +40,10 @@ public class LoanController {
         ApiResponse<LoanResponse> apiResponse = loanService.settleLoan(id);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ApiResponse<Object>> deleteLoanById(@PathVariable Long id){
+        ApiResponse<Object> apiResponse = loanService.deleteLoanById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
 }
