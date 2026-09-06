@@ -5,13 +5,11 @@ import cit.backen.library.management.system.api.response.ApiResponse;
 import cit.backen.library.management.system.loan.dto.LoanRequest;
 import cit.backen.library.management.system.loan.dto.LoanResponse;
 import cit.backen.library.management.system.loan.service.LoanService;
+import cit.backen.library.management.system.page.response.PageResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/loans")
@@ -26,5 +24,14 @@ public class LoanController {
     public ResponseEntity<ApiResponse<LoanResponse>> addLoan(@Valid @RequestBody LoanRequest request){
         ApiResponse<LoanResponse> apiResponse = loanService.addLoan(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+    }
+
+    @GetMapping
+    public ResponseEntity<ApiResponse<PageResponse<LoanResponse>>> getAllLoans(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int pageSize
+    ){
+        ApiResponse<PageResponse<LoanResponse>> apiResponse = loanService.getAllLoans(page,pageSize);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 }
