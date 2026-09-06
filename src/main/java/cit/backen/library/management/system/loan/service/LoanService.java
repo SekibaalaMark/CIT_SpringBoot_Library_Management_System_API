@@ -11,7 +11,10 @@ import cit.backen.library.management.system.loan.mapper.LoanMapper;
 import cit.backen.library.management.system.loan.model.Loan;
 import cit.backen.library.management.system.loan.repository.LoanRepository;;
 import cit.backen.library.management.system.page.response.PageResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class LoanService {
@@ -42,5 +45,12 @@ public class LoanService {
         loan.setStatus(Status.SETTLED);
         LoanResponse loanResponse = loanMapper.loanModelToResponse(loanRepository.save(loan));
         return new ApiResponse<>("SUCCESS","Loan settled successfully",loanResponse);
+    }
+
+    public ApiResponse<Object> deleteLoanById(Long id){
+        loanRepository.findById(id)
+                .orElseThrow(()-> new LoanNotFoundException("id: "+id));
+        loanRepository.deleteById(id);
+        return new ApiResponse<>("SUCCESS","Loan record deleted successfully",null);
     }
 }
