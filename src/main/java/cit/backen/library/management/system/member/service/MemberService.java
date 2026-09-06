@@ -63,4 +63,12 @@ public class MemberService {
     public ApiResponse<MemberResponse> updateMemberPartially(Long id , MemberPartialUpdateRequest request){
         return memberFacade.updateMemberPartially(id,request);
     }
+
+
+    public ApiResponse<Object> deleteMemberById(Long id){
+        memberRepository.findById(id)
+                .orElseThrow(()-> new MemberNotFoundException("id: "+id));
+        memberRepository.deleteById(id);
+        return new ApiResponse<>("SUCCESS","Member deleted Successfully",null);
+    }
 }
