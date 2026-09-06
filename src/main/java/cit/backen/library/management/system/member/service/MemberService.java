@@ -10,10 +10,12 @@ import cit.backen.library.management.system.member.mapper.MemberMapper;
 import cit.backen.library.management.system.member.model.Member;
 import cit.backen.library.management.system.member.repository.MemberRepository;
 import cit.backen.library.management.system.page.response.PageResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
@@ -50,5 +52,9 @@ public class MemberService {
                 .orElseThrow(()-> new MemberNotFoundException("username: " + username));
         MemberResponse memberResponse = memberMapper.memberModelToResponse(member);
         return new ApiResponse<>("SUCCESS","Member returned successfully",memberResponse);
+    }
+
+    public ApiResponse<MemberResponse> updateMemberFully(Long id ,MemberRequest request){
+        return memberFacade.updateMemberFully(id,request);
     }
 }
