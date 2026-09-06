@@ -58,4 +58,12 @@ public class BookService {
         return new ApiResponse<>("SUCCESS","Book returned",bookResponse);
     }
 
+
+    public ApiResponse<Object> deleteBookById(Long id){
+        bookRepository.findById(id)
+                        .orElseThrow(()-> new BookNotFoundException("id: "+id));
+        bookRepository.deleteById(id);
+        return new ApiResponse<>("SUCCESS","Book deleted successfully",null);
+    }
+
 }
