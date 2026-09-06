@@ -6,6 +6,7 @@ import java.time.LocalDate;
 
 
 public record LoanResponse(
+        Long id,
         LocalDate dateDue,
         Long memberId,
         Long bookId,
