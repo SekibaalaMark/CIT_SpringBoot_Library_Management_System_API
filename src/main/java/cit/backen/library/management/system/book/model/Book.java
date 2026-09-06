@@ -26,7 +26,7 @@ public class Book {
     private Long id;
 
     @NotBlank(message = "ISBN Cannot be blank")
-    private String Isbn;
+    private String isbn;
 
     @NotBlank(message = "title cannot be blank")
     @Size(max=200,message = "Title Cannot Exceed 200 Letters and Must be at least 10 Characters")
@@ -47,7 +47,7 @@ public class Book {
     private List<Loan> loans = new ArrayList<>();
 
     public Book(String isbn, String title, Edition edition, String author, Status status) {
-        Isbn = isbn;
+        this.isbn = isbn;
         this.title = title;
         this.edition = edition;
         this.author = author;

@@ -9,7 +9,6 @@ import cit.backen.library.management.system.book.service.BookService;
 import cit.backen.library.management.system.page.response.PageResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -55,5 +54,10 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
+    @GetMapping("/isbn/{isbn}")
+    public ResponseEntity<ApiResponse<BookResponse>> getBookByIsbn(@PathVariable String isbn){
+        ApiResponse<BookResponse> apiResponse = bookService.getBookByIsbn(isbn);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
 
 }
