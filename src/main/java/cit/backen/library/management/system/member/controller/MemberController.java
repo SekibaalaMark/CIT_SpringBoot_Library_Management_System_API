@@ -34,4 +34,10 @@ public class MemberController {
         ApiResponse<PageResponse<MemberResponse>> apiResponse = memberService.getAllMembers(page,pageSize);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<ApiResponse<MemberResponse>> getMemberById(@PathVariable Long id){
+        ApiResponse<MemberResponse> apiResponse = memberService.getMemberById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
 }
