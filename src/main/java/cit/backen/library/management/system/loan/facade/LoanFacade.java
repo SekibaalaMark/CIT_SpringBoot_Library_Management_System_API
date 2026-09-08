@@ -2,7 +2,7 @@ package cit.backen.library.management.system.loan.facade;
 
 
 import cit.backen.library.management.system.api.response.ApiResponse;
-import cit.backen.library.management.system.exceptions.loan.MemberHasThreeActiveLoans;
+import cit.backen.library.management.system.exceptions.loan.MemberHasThreeActiveLoansException;
 import cit.backen.library.management.system.loan.dto.LoanRequest;
 import cit.backen.library.management.system.loan.dto.LoanResponse;
 import cit.backen.library.management.system.loan.enums.Status;
@@ -34,7 +34,7 @@ public class LoanFacade {
         long numberOfActiveLoans = loanRepository.countActiveLoansByMemberId(request.getMemberId(), Status.ACTIVE);
 
         if(numberOfActiveLoans>=3){
-            throw new MemberHasThreeActiveLoans();
+            throw new MemberHasThreeActiveLoansException();
         }
 
         LoanResponse loanResponse = loanMapper.loanModelToResponse(loanRepository.save(loan));
