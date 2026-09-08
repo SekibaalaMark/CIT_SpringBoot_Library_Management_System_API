@@ -2,6 +2,10 @@ package cit.backen.library.management.system.loan.facade;
 
 
 import cit.backen.library.management.system.api.response.ApiResponse;
+import cit.backen.library.management.system.book.model.Book;
+import cit.backen.library.management.system.book.repository.BookRepository;
+import cit.backen.library.management.system.exceptions.book.BookNotFoundException;
+import cit.backen.library.management.system.exceptions.book.BookUnavailableException;
 import cit.backen.library.management.system.exceptions.loan.MemberHasThreeActiveLoansException;
 import cit.backen.library.management.system.loan.dto.LoanRequest;
 import cit.backen.library.management.system.loan.dto.LoanResponse;
@@ -15,17 +19,18 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 @Component
 public class LoanFacade {
     private final LoanMapper loanMapper;
     private final LoanRepository loanRepository;
+    private final BookRepository bookRepository;
 
-    public LoanFacade(LoanMapper loanMapper, LoanRepository loanRepository) {
+    public LoanFacade(LoanMapper loanMapper, LoanRepository loanRepository, BookRepository bookRepository) {
         this.loanMapper = loanMapper;
         this.loanRepository = loanRepository;
+        this.bookRepository = bookRepository;
     }
 
 
@@ -37,6 +42,15 @@ public class LoanFacade {
             throw new MemberHasThreeActiveLoansException();
         }
 
+        Book book = bookRepository.findById(request.getBookId())
+                .orElseThrow(()-> new BookNotFoundException("Id: "+request.getBookId()));
+
+
+        if(book.getStatus()!= cit.backen.library.management.system.book.enums.Status.AVAILABLE){
+            throw new BookUnavailableException(request.getBookId());
+        }
+        book.setStatus(cit.backen.library.management.system.book.enums.Status.LOANED);
+        bookRepository.save(book);
         LoanResponse loanResponse = loanMapper.loanModelToResponse(loanRepository.save(loan));
         return new ApiResponse<>("SUCCESS","Loan Added Successfully",loanResponse);
     }
