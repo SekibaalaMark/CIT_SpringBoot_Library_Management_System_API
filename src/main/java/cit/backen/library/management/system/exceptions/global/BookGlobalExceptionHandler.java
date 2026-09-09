@@ -3,7 +3,7 @@ package cit.backen.library.management.system.exceptions.global;
 import cit.backen.library.management.system.api.response.ApiResponse;
 import cit.backen.library.management.system.exceptions.book.BookNotFoundException;
 import cit.backen.library.management.system.exceptions.book.BookUnavailableException;
-import cit.backen.library.management.system.exceptions.book.BookWithIsbnAlreadyExists;
+import cit.backen.library.management.system.exceptions.book.BookWithIsbnAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,8 +25,8 @@ public class BookGlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
 
-    @ExceptionHandler(BookWithIsbnAlreadyExists.class)
-    public ResponseEntity<ApiResponse<Object>> handleBookWithIsbnAlreadyExists(BookWithIsbnAlreadyExists exception){
+    @ExceptionHandler(BookWithIsbnAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Object>> handleBookWithIsbnAlreadyExists(BookWithIsbnAlreadyExistsException exception){
         ApiResponse<Object> apiResponse = new ApiResponse<>("BAD_REQUEST", exception.getMessage(), null);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
     }
