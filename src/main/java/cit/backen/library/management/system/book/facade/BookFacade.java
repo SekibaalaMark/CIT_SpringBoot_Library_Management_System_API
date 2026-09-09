@@ -9,7 +9,7 @@ import cit.backen.library.management.system.book.mapper.BookMapper;
 import cit.backen.library.management.system.book.model.Book;
 import cit.backen.library.management.system.book.repository.BookRepository;
 import cit.backen.library.management.system.exceptions.book.BookNotFoundException;
-import cit.backen.library.management.system.exceptions.book.BookWithIsbnAlreadyExists;
+import cit.backen.library.management.system.exceptions.book.BookWithIsbnAlreadyExistsException;
 import cit.backen.library.management.system.page.response.PageResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,7 +32,7 @@ public class BookFacade {
 
     public ApiResponse<BookResponse> addBook(BookRequest request){
         if(bookRepository.existsByIsbn(request.getIsbn())){
-            throw new BookWithIsbnAlreadyExists(request.getIsbn());
+            throw new BookWithIsbnAlreadyExistsException(request.getIsbn());
         }
         Book book = bookRepository.save(bookMapper.bookRequestToModel(request));
         BookResponse bookResponse = bookMapper.bookModelToResponse(book);
