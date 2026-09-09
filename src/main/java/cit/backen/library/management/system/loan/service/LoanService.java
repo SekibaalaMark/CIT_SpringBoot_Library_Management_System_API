@@ -28,10 +28,8 @@ public class LoanService {
         this.loanRepository = loanRepository;
     }
 
-    public ApiResponse<LoanResponse> addLoan(LoanRequest request){
-        Loan loan = loanMapper.loanRequestToModel(request);
-        LoanResponse loanResponse = loanMapper.loanModelToResponse(loanRepository.save(loan));
-        return new ApiResponse<>("SUCCESS","Loan Added Successfully",loanResponse);
+    public ApiResponse<LoanResponse> addLoan(LoanRequest request) {
+        return loanFacade.addLoan(request);
     }
 
 

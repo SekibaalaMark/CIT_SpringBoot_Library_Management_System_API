@@ -10,8 +10,6 @@ import cit.backen.library.management.system.book.model.Book;
 import cit.backen.library.management.system.book.repository.BookRepository;
 import cit.backen.library.management.system.exceptions.book.BookNotFoundException;
 import cit.backen.library.management.system.page.response.PageResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -29,9 +27,7 @@ public class BookService {
 
 
     public ApiResponse<BookResponse> addBook(BookRequest request){
-        Book book = bookRepository.save(bookMapper.bookRequestToModel(request));
-        BookResponse bookResponse = bookMapper.bookModelToResponse(book);
-        return new ApiResponse<>("SUCCESS","Book added successfully",bookResponse);
+        return bookFacade.addBook(request);
     }
 
 
