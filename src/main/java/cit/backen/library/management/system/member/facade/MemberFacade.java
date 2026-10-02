@@ -6,7 +6,7 @@ import cit.backen.library.management.system.exceptions.member.MemberNotFoundExce
 import cit.backen.library.management.system.exceptions.member.MemberWithNinNumberAlreadyExistException;
 import cit.backen.library.management.system.exceptions.member.MemberWithUsernameAlreadyExistsException;
 import cit.backen.library.management.system.member.dto.MemberPartialUpdateRequest;
-import cit.backen.library.management.system.member.dto.MemberRequest;
+import cit.backen.library.management.system.member.dto.MemberRegistrationRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.mapper.MemberMapper;
 import cit.backen.library.management.system.member.model.Member;
@@ -30,8 +30,8 @@ public class MemberFacade {
         this.memberRepository = memberRepository;
     }
 
-    public ApiResponse<MemberResponse> addMember(MemberRequest request){
-        Member member = memberMapper.memberRequestToModel(request);
+    public ApiResponse<MemberResponse> addMember(MemberRegistrationRequest request){
+        Member member = memberMapper.memberRegistrationRequestToModel(request);
 
         if(memberRepository.existsByUsername(request.getUsername())){
             throw new MemberWithUsernameAlreadyExistsException(request.getUsername());
@@ -69,7 +69,7 @@ public class MemberFacade {
     }
 
 
-    public ApiResponse<MemberResponse> updateMemberFully(Long id ,MemberRequest request){
+    public ApiResponse<MemberResponse> updateMemberFully(Long id , MemberRegistrationRequest request){
         Member member = memberRepository.findById(id)
                 .orElseThrow(()-> new MemberNotFoundException("id:"+ id));
         if(memberRepository.existsByUsername(request.getUsername())){

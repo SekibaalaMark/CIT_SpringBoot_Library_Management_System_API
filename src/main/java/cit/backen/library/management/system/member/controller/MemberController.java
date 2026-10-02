@@ -3,7 +3,7 @@ package cit.backen.library.management.system.member.controller;
 
 import cit.backen.library.management.system.api.response.ApiResponse;
 import cit.backen.library.management.system.member.dto.MemberPartialUpdateRequest;
-import cit.backen.library.management.system.member.dto.MemberRequest;
+import cit.backen.library.management.system.member.dto.MemberRegistrationRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.service.MemberService;
 import cit.backen.library.management.system.page.response.PageResponse;
@@ -22,7 +22,7 @@ public class MemberController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<MemberResponse>> addMember(@Valid @RequestBody MemberRequest request){
+    public ResponseEntity<ApiResponse<MemberResponse>> addMember(@Valid @RequestBody MemberRegistrationRequest request){
         ApiResponse<MemberResponse> apiResponse = memberService.addMember(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
@@ -49,7 +49,7 @@ public class MemberController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<MemberResponse>> updateMemberFully(@PathVariable Long id ,@Valid @RequestBody MemberRequest request){
+    public ResponseEntity<ApiResponse<MemberResponse>> updateMemberFully(@PathVariable Long id ,@Valid @RequestBody MemberRegistrationRequest request){
         ApiResponse<MemberResponse> apiResponse = memberService.updateMemberFully(id,request);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
