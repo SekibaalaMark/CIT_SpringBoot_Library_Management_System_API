@@ -21,11 +21,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @PostMapping
-    public ResponseEntity<ApiResponse<MemberResponse>> addMember(@Valid @RequestBody MemberRegistrationRequest request){
-        ApiResponse<MemberResponse> apiResponse = memberService.addMember(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
-    }
+
 
     @GetMapping
     public ResponseEntity<ApiResponse<PageResponse<MemberResponse>>> getAllMembers(

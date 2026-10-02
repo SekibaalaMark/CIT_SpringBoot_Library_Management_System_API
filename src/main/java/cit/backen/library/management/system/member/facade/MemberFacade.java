@@ -12,23 +12,21 @@ import cit.backen.library.management.system.member.mapper.MemberMapper;
 import cit.backen.library.management.system.member.model.Member;
 import cit.backen.library.management.system.member.repository.MemberRepository;
 import cit.backen.library.management.system.page.response.PageResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
 
 @Component
+@RequiredArgsConstructor
 public class MemberFacade {
     private final MemberMapper memberMapper;
     private final MemberRepository memberRepository;
-
-    public MemberFacade(MemberMapper memberMapper, MemberRepository memberRepository) {
-        this.memberMapper = memberMapper;
-        this.memberRepository = memberRepository;
-    }
 
     public ApiResponse<MemberResponse> addMember(MemberRegistrationRequest request){
         Member member = memberMapper.memberRegistrationRequestToModel(request);
@@ -40,6 +38,7 @@ public class MemberFacade {
         if(memberRepository.existsByNinNumber(request.getNinNumber())){
             throw new MemberWithNinNumberAlreadyExistException(request.getNinNumber());
         }
+
 
         MemberResponse memberResponse = memberMapper.memberModelToResponse(memberRepository.save(member));
         return new ApiResponse<MemberResponse>("SUCCESS","Member added successfully",memberResponse);
