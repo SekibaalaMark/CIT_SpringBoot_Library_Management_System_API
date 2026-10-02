@@ -1,17 +1,18 @@
 package cit.backen.library.management.system.member.controller;
 
 import cit.backen.library.management.system.api.response.ApiResponse;
-import cit.backen.library.management.system.exceptions.member.MemberWithUsernameAlreadyExistsException;
 import cit.backen.library.management.system.member.dto.MemberRegistrationRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
+import cit.backen.library.management.system.member.dto.UserLoginRequest;
 import cit.backen.library.management.system.member.facade.MemberFacade;
-import cit.backen.library.management.system.member.model.Member;
-import cit.backen.library.management.system.member.repository.MemberRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class MemberAuthController {
     private final MemberFacade memberFacade;
+    private final AuthenticationManager authenticationManager;
 
 
     @PostMapping("/register")
@@ -26,6 +28,23 @@ public class MemberAuthController {
         ApiResponse<MemberResponse> apiResponse = memberFacade.addMember(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<Void>> login(@RequestBody UserLoginRequest request) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    UsernamePasswordAuthenticationToken.unauthenticated(
+                            request.username(), request.password()));
+            ApiResponse<Void> apiResponse = new ApiResponse<>("SUCCESS","Login successful for " + authentication.getName(),null);
+            return ResponseEntity.ok(apiResponse);
+        } catch (AuthenticationException e) {
+            ApiResponse<Void> apiResponse = new ApiResponse<>("ERROR","Invalid username or password",null);
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponse);
+        }
+    }
+
+
 
     @GetMapping
     public String hello(){
