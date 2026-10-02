@@ -1,6 +1,6 @@
 package cit.backen.library.management.system.member.mapper;
 
-import cit.backen.library.management.system.member.dto.MemberRequest;
+import cit.backen.library.management.system.member.dto.MemberRegistrationRequest;
 import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.model.Member;
 import org.springframework.stereotype.Component;
@@ -8,12 +8,14 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MemberMapper {
-    public Member memberRequestToModel(MemberRequest request){
+    public Member memberRegistrationRequestToModel(MemberRegistrationRequest request){
         Member member = new Member();
         member.setFirstName(request.getFirstName());
         member.setLastName(request.getLastName());
         member.setNinNumber(request.getNinNumber());
         member.setUsername(request.getUsername());
+        member.setPassword(request.getPassword());
+        member.setRole(request.getRole());
         return member;
     }
 
