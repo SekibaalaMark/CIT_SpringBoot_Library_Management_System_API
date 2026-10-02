@@ -5,6 +5,7 @@ import cit.backen.library.management.system.member.dto.MemberRegistrationRequest
 import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.dto.UserLoginRequest;
 import cit.backen.library.management.system.member.facade.MemberFacade;
+import cit.backen.library.management.system.member.service.JwtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberAuthController {
     private final MemberFacade memberFacade;
     private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
 
 
     @PostMapping("/register")
@@ -31,12 +33,14 @@ public class MemberAuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<Void>> login(@RequestBody UserLoginRequest request) {
+    public ResponseEntity<ApiResponse<?>> login(@RequestBody UserLoginRequest request) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     UsernamePasswordAuthenticationToken.unauthenticated(
                             request.username(), request.password()));
-            ApiResponse<Void> apiResponse = new ApiResponse<>("SUCCESS","Login successful for " + authentication.getName(),null);
+
+            String token = jwtService.generateToken(authentication.getName());
+            ApiResponse<String> apiResponse = new ApiResponse<>("SUCCESS","Login successful for " + authentication.getName(),token);
             return ResponseEntity.ok(apiResponse);
         } catch (AuthenticationException e) {
             ApiResponse<Void> apiResponse = new ApiResponse<>("ERROR","Invalid username or password",null);
