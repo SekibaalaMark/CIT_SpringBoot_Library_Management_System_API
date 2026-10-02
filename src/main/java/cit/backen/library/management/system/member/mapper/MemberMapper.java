@@ -15,7 +15,6 @@ public class MemberMapper {
         member.setNinNumber(request.getNinNumber());
         member.setUsername(request.getUsername());
         member.setPassword(request.getPassword());
-        member.setRole(request.getRole());
         return member;
     }
 

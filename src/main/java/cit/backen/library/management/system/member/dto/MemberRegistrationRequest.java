@@ -1,7 +1,11 @@
 package cit.backen.library.management.system.member.dto;
 
 
+import cit.backen.library.management.system.member.model.Role;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -11,7 +15,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class MemberRequest {
+public class MemberRegistrationRequest {
     @NotBlank(message = "NIN Number cannot be blank")
     @Size(min = 14, max = 14,message = "Nin Number must be characters ")
     private String ninNumber;
@@ -27,4 +31,9 @@ public class MemberRequest {
     @NotBlank(message = "Username cannot be blank")
     @Size(min = 4, max = 50, message = "username must be between 4 to 50 characters")
     private String username;
+
+    @NotBlank(message = "Password Cannot be blank")
+    @Size(min=8,message = "Password must be at least 8 characters")
+    private String password;
+
 }
