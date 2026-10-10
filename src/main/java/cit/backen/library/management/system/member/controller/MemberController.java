@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/members")
+@RequestMapping("/api/v1")
 public class MemberController {
     private final MemberService memberService;
 
@@ -23,7 +23,7 @@ public class MemberController {
 
 
 
-    @GetMapping
+    @GetMapping("/librarian")
     public ResponseEntity<ApiResponse<PageResponse<MemberResponse>>> getAllMembers(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize
@@ -32,7 +32,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("librarian/id/{id}")
     public ResponseEntity<ApiResponse<MemberResponse>> getMemberById(@PathVariable Long id){
         ApiResponse<MemberResponse> apiResponse = memberService.getMemberById(id);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
@@ -56,7 +56,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("librarian/{id}")
     public ResponseEntity<ApiResponse<Object>> deleteMemberById(@PathVariable Long id){
         ApiResponse<Object> apiResponse = memberService.deleteMemberById(id);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
