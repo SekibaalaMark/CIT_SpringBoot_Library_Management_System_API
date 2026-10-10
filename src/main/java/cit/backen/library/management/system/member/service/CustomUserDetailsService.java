@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -23,11 +21,11 @@ public class CustomUserDetailsService implements UserDetailsService {
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
 
-        return new User(
-                member.getUsername(),
-                member.getPassword(),
-                List.of()
-        );
+        return org.springframework.security.core.userdetails.User
+                .withUsername(member.getUsername())
+                .password(member.getPassword())
+                .roles(member.getRole().name())
+                .build();
 
     }
 }
