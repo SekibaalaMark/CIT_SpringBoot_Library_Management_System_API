@@ -1,6 +1,7 @@
 package cit.backen.library.management.system.member.service;
 
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -32,5 +33,18 @@ public class JwtService {
                 .expiration(new Date(now.getTime() + expirationMs))
                 .signWith(key)
                 .compact();
+    }
+
+
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
