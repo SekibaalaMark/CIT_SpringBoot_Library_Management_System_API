@@ -10,6 +10,7 @@ import cit.backen.library.management.system.page.response.PageResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +23,7 @@ public class BookController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<ApiResponse<BookResponse>> addBook(@Valid @RequestBody BookRequest request){
         ApiResponse<BookResponse> apiResponse = bookService.addBook(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
@@ -43,12 +45,14 @@ public class BookController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<ApiResponse<BookResponse>> updateBookFully(@PathVariable Long id, @Valid @RequestBody BookRequest bookRequest){
         ApiResponse<BookResponse> apiResponse = bookService.updateBookFully(id,bookRequest);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<ApiResponse<BookResponse>> updateBookPartial(@PathVariable Long id, @Valid @RequestBody BookPartialUpdateRequest request){
         ApiResponse<BookResponse> apiResponse = bookService.updateBookPartial(id,request);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
@@ -61,6 +65,7 @@ public class BookController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<ApiResponse<Object>> deleteBookById(@PathVariable Long id){
         ApiResponse<Object> apiResponse = bookService.deleteBookById(id);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
