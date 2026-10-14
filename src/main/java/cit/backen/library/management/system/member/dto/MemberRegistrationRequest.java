@@ -1,11 +1,7 @@
 package cit.backen.library.management.system.member.dto;
 
 
-import cit.backen.library.management.system.member.model.Role;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -33,7 +29,7 @@ public class MemberRegistrationRequest {
     private String username;
 
     @NotBlank(message = "Password Cannot be blank")
-    @Size(min=8,message = "Password must be at least 8 characters")
+    @Size(min=8,max=72,message = "Password must be  8 and 72 characters")
     private String password;
 
 }
