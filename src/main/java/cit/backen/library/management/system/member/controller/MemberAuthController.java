@@ -33,25 +33,14 @@ public class MemberAuthController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<?>> login(@RequestBody UserLoginRequest request) {
-        try {
-            Authentication authentication = authenticationManager.authenticate(
-                    UsernamePasswordAuthenticationToken.unauthenticated(
-                            request.username(), request.password()));
+    public ResponseEntity<ApiResponse<String>> login(@Valid @RequestBody UserLoginRequest request) {
+        Authentication authentication = authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken.unauthenticated(
+                        request.username(), request.password()));
 
-            String token = jwtService.generateToken(authentication.getName());
-            ApiResponse<String> apiResponse = new ApiResponse<>("SUCCESS","Login successful for " + authentication.getName(),token);
-            return ResponseEntity.ok(apiResponse);
-        } catch (AuthenticationException e) {
-            ApiResponse<Void> apiResponse = new ApiResponse<>("ERROR","Invalid username or password",null);
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponse);
-        }
-    }
-
-
-
-    @GetMapping
-    public String hello(){
-        return "Hello, welcome";
+        String token = jwtService.generateToken(authentication.getName());
+        ApiResponse<String> apiResponse = new ApiResponse<>(
+                "SUCCESS", "Login successful for " + authentication.getName(), token);
+        return ResponseEntity.ok(apiResponse);
     }
 }
