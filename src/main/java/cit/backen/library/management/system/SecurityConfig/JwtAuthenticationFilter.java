@@ -4,6 +4,7 @@ package cit.backen.library.management.system.SecurityConfig;
 
 
 import cit.backen.library.management.system.member.service.JwtService;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -61,9 +62,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 context.setAuthentication(authentication);
                 SecurityContextHolder.setContext(context);
             }
+        } catch (ExpiredJwtException e) {
+        request.setAttribute("jwt_error", "Token has expired. Please log in again.");
+        log.debug("JWT expired: {}", e.getMessage());
         } catch (JwtException | IllegalArgumentException | UsernameNotFoundException e) {
-            log.debug("JWT rejected: {}", e.getMessage());
-        }
+        request.setAttribute("jwt_error", "Invalid token.");
+        log.debug("JWT rejected: {}", e.getMessage());
+    }
 
         filterChain.doFilter(request, response);
     }
