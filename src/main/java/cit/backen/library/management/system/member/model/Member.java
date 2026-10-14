@@ -39,13 +39,23 @@ public class Member {
     @Size(min = 4, max = 50, message = "username must be between 4 to 20 characters")
     private String username;
 
+    @NotBlank(message = "Password Cannot be blank")
+    @Size(min=8,message = "Password must be at least 8 characters")
+    private String password;
+
     @OneToMany(mappedBy = "member",orphanRemoval = true)
     private List<Loan> loans  = new ArrayList<>();
 
-    public Member(String ninNumber, String firstName, String lastName,String username) {
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "User Role  is required")
+    private Role role = Role.MEMBER;
+
+    public Member(String ninNumber, String firstName, String lastName,String username,String password,Role role) {
         this.ninNumber = ninNumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
+        this.password = password;
+        this.role = role;
     }
 }

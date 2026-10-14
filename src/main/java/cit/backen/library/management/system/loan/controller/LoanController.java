@@ -9,6 +9,7 @@ import cit.backen.library.management.system.page.response.PageResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,6 +28,7 @@ public class LoanController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<ApiResponse<PageResponse<LoanResponse>>> getAllLoans(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int pageSize
@@ -36,12 +38,14 @@ public class LoanController {
     }
 
     @PatchMapping("/settle/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<ApiResponse<LoanResponse>> settleLoan(@PathVariable Long id){
         ApiResponse<LoanResponse> apiResponse = loanService.settleLoan(id);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('LIBRARIAN')")
     public ResponseEntity<ApiResponse<Object>> deleteLoanById(@PathVariable Long id){
         ApiResponse<Object> apiResponse = loanService.deleteLoanById(id);
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
