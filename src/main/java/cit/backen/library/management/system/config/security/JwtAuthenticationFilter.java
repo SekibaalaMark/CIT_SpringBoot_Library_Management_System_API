@@ -1,4 +1,4 @@
-package cit.backen.library.management.system.SecurityConfig;
+package cit.backen.library.management.system.config.security;
 
 
 

@@ -22,7 +22,7 @@ public class LoanController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<LoanResponse>> addLoan(@Valid @RequestBody LoanRequest request){
+    public ResponseEntity<ApiResponse<LoanResponse>> borrowBook(@Valid @RequestBody LoanRequest request){
         ApiResponse<LoanResponse> apiResponse = loanService.addLoan(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
     }
