@@ -1,4 +1,4 @@
-package cit.backen.library.management.system.SecurityConfig;
+package cit.backen.library.management.system.config.security;
 
 
 import cit.backen.library.management.system.exceptions.security.RestAccessDeniedHandler;
@@ -25,7 +25,7 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class Config  {
+public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
