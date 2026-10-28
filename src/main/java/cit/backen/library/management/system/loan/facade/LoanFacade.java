@@ -13,7 +13,9 @@ import cit.backen.library.management.system.loan.enums.Status;
 import cit.backen.library.management.system.loan.mapper.LoanMapper;
 import cit.backen.library.management.system.loan.model.Loan;
 import cit.backen.library.management.system.loan.repository.LoanRepository;
+import cit.backen.library.management.system.messaging.LoanEventProducer;
 import cit.backen.library.management.system.page.response.PageResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,16 +24,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class LoanFacade {
     private final LoanMapper loanMapper;
     private final LoanRepository loanRepository;
     private final BookRepository bookRepository;
-
-    public LoanFacade(LoanMapper loanMapper, LoanRepository loanRepository, BookRepository bookRepository) {
-        this.loanMapper = loanMapper;
-        this.loanRepository = loanRepository;
-        this.bookRepository = bookRepository;
-    }
+    private final LoanEventProducer loanEventProducer;
 
 
     public ApiResponse<LoanResponse> addLoan(LoanRequest request){
@@ -51,6 +49,7 @@ public class LoanFacade {
         }
         book.setStatus(cit.backen.library.management.system.book.enums.Status.LOANED);
         bookRepository.save(book);
+        loanEventProducer.loanCreated(String.valueOf(request.getMemberId()),book.getTitle());
         LoanResponse loanResponse = loanMapper.loanModelToResponse(loanRepository.save(loan));
         return new ApiResponse<>("SUCCESS","Loan Added Successfully",loanResponse);
     }
