@@ -1,21 +1,22 @@
 package cit.backen.library.management.system.messaging;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import tools.jackson.databind.json.JsonMapper;
 
+@RequiredArgsConstructor
 @Component
 public class LoanEventProducer {
 
 
     private final KafkaTemplate<String, String> kafkaTemplate;
+    private final JsonMapper jsonMapper;
 
-    public LoanEventProducer(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
-    }
 
-    public void loanCreated(String memberId, String bookTitle) {
-        String message = "Member " + memberId + " borrowed " + bookTitle;
-        kafkaTemplate.send("library.loan-created", memberId, message);
+    public void loanCreated(LoanCreatedEvent event) {
+        String payload = jsonMapper.writeValueAsString(event);//record -> Json Text
+        kafkaTemplate.send("library.loan-created", String.valueOf(event.data().memberId()) ,payload);
     }
 }
