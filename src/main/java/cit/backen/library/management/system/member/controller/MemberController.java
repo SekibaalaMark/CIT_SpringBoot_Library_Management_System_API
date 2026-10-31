@@ -8,6 +8,7 @@ import cit.backen.library.management.system.member.dto.MemberResponse;
 import cit.backen.library.management.system.member.service.MemberService;
 import cit.backen.library.management.system.page.response.PageResponse;
 import jakarta.validation.Valid;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users")
+@EnableMethodSecurity
 public class MemberController {
     private final MemberService memberService;
 

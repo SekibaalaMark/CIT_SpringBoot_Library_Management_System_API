@@ -7,14 +7,17 @@ import cit.backen.library.management.system.book.dto.BookRequest;
 import cit.backen.library.management.system.book.dto.BookResponse;
 import cit.backen.library.management.system.book.service.BookService;
 import cit.backen.library.management.system.page.response.PageResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/books")
+@EnableMethodSecurity
 public class BookController {
     private final BookService bookService;
 
