@@ -13,6 +13,8 @@ import cit.backen.library.management.system.loan.enums.Status;
 import cit.backen.library.management.system.loan.mapper.LoanMapper;
 import cit.backen.library.management.system.loan.model.Loan;
 import cit.backen.library.management.system.loan.repository.LoanRepository;
+import cit.backen.library.management.system.messaging.LoanCreatedData;
+import cit.backen.library.management.system.messaging.LoanCreatedEvent;
 import cit.backen.library.management.system.messaging.LoanEventProducer;
 import cit.backen.library.management.system.page.response.PageResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +23,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
+
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -49,8 +54,16 @@ public class LoanFacade {
         }
         book.setStatus(cit.backen.library.management.system.book.enums.Status.LOANED);
         bookRepository.save(book);
-        loanEventProducer.loanCreated(String.valueOf(request.getMemberId()),book.getTitle());
-        LoanResponse loanResponse = loanMapper.loanModelToResponse(loanRepository.save(loan));
+
+
+        Loan newLoan = loanRepository.save(loan);
+        loanEventProducer.loanCreated(
+                new LoanCreatedEvent(UUID.randomUUID(),"LOAN_CREATED",Instant.now(),
+                        new LoanCreatedData(newLoan.getId(), request.getMemberId(), request.getBookId(),newLoan.getDateDue())
+                )
+
+        );
+        LoanResponse loanResponse = loanMapper.loanModelToResponse(newLoan);
         return new ApiResponse<>("SUCCESS","Loan Added Successfully",loanResponse);
     }
 
